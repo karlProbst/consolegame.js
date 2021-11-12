@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>typing_farm_prototype.js </h1>
+
+    <script>
+
+function sin(i){
+	let wave = []
+	let warray = []
+	
+		
+	for(let k = 0; k<10; k++){
+		//let x = i/30+(k*3)
+		let x = (i*(k+1))/100
+		//x =(x*x+i)/100
+		wave[k] = toDec(Math.sin(x),40);
+	};
+	//check if range has array
+	RangeInArray(.1,1,wave);
+	//output
+		
+	trace("\u2593"+RangeInArray(.1/5,1,wave)+"\u2593" );
+		
+
+	
+		
+};
+var intervalId;
+var counter=0;
+Loop(5000);
+function Loop(loops){
+	if(!intervalId){
+		intervalId = setInterval( ()=>{
+		counter++;
+		if(counter>loops){clearInterval(intervalId);intervalId=null;};
+		sin(counter);
+	}, 60);	
+			
+			
+			
+}
+	
+	
+};
+function RangeInArray(steps,rng,arr){
+	let out =[]
+	
+		for(let j = -rng; j<rng; j+=steps){
+					if( arr.includes(toDec(j,40)) ){ 
+						out+="\u2593"
+					}else{
+						out+=" "
+					};
+			};	
+	return out
+};
+function trace(str){
+	console.log(str);
+};
+function toDec(x,dec){
+	dec = 50
+	//todo make 1 default
+	//round number to only 1 decimal
+	return Math.round(x * dec) / dec
+};
+
+
+    </script>
+</body>
+</html>
