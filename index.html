@@ -7,18 +7,46 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>typing_farm_prototype.js </h1>
+    <h1>visualizer.js </h1>
+	<p id="yas"></p>♥</p>
 
-    <script>
 
+    <button type="button" id="button">play!</button>
+	<br>
+    <textarea type="textarea" id="outputbox" cols=102 rows=40></textarea>
+    
+    <p id="output"></p>
+    <iframe width="420" height="315" id="vid"
+src="https://www.youtube.com/embed/u8EgTzNrR2g">
+</iframe> 
+<script>
+	
+	const vid = document.getElementById("vid");
+	const yas = document.getElementById("yas");
+	 const buttonid = document.getElementById("button");
+     //const inputid = document.getElementById("inputbox");
+     const outputid = document.getElementById("outputbox");
+	let count_trace = 1;
+	
+	var g = "♥"
+	var f = "  "
+
+yas.style.color="red";
+function Amor(){
+		yas.style.color="red";
+		let beat = Math.sin(count_trace)*2+100
+		yas.style.fontSize=(beat.toString()+"px");
+	
+};
 function sin(i){
+	Amor();
 	let wave = []
 	let warray = []
 	
 		
 	for(let k = 0; k<10; k++){
 		//let x = i/30+(k*3)
-		let x = (i*(k+1))/100
+		let x = (i*(k+1))/500
 		//x =(x*x+i)/100
 		wave[k] = toDec(Math.sin(x),40);
 	};
@@ -26,7 +54,7 @@ function sin(i){
 	RangeInArray(.1,1,wave);
 	//output
 		
-	trace("\u2593"+RangeInArray(.1/5,1,wave)+"\u2593" );
+	trace(g+RangeInArray(.1/5,1,wave)+g );
 		
 
 	
@@ -34,14 +62,14 @@ function sin(i){
 };
 var intervalId;
 var counter=0;
-Loop(5000);
-function Loop(loops){
+Loop(0,60);
+function Loop(deadline,framerate){
 	if(!intervalId){
 		intervalId = setInterval( ()=>{
 		counter++;
-		if(counter>loops){clearInterval(intervalId);intervalId=null;};
+		if(counter>deadline && deadline!=0){clearInterval(intervalId);intervalId=null;};
 		sin(counter);
-	}, 60);	
+	}, framerate);	
 			
 			
 			
@@ -54,15 +82,36 @@ function RangeInArray(steps,rng,arr){
 	
 		for(let j = -rng; j<rng; j+=steps){
 					if( arr.includes(toDec(j,40)) ){ 
-						out+="\u2593"
+						out+=g
 					}else{
-						out+=" "
+						out+=f
 					};
 			};	
 	return out
 };
+function deleteLine(str){
+		// break the textblock into an array of lines
+		let lines = str.split('\n');
+		// remove one line, starting at the first position
+		lines.splice(0,1);
+		// join the array back into a single string
+		return lines.join('\n');
+	
+};
 function trace(str){
-	console.log(str);
+	outputid.scrollTop = 99999;
+
+	//console.log(str);
+	count_trace +=1;
+	if(count_trace<41){
+		document.getElementById("outputbox").innerHTML += str+"\n";
+		
+	}else{
+		document.getElementById("outputbox").innerHTML += str+"\n";
+		document.getElementById("outputbox").innerHTML = deleteLine(document.getElementById("outputbox").innerHTML)
+};
+	
+	
 };
 function toDec(x,dec){
 	dec = 50
