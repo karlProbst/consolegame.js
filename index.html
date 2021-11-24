@@ -14,13 +14,19 @@ background-image:linear-gradient(140deg, #d30cb2 0%, #5c3a9c 50%, #6b27da 100%);
 
 	<p id="yas" style="color:red">♥</p>
     
-
+    
 	<br>
 
     <div id="div-text" contenteditable="true" style="display:inline">
          testetstetetet<p style="color: aqua;font-size: 50px;">d e a d</p>
     </div>
 
+    <br>
+    <button id="buttona"> up</button>
+    <button id="buttonb">down</button>
+    <button id="buttonc"> left</button>
+    <button id="buttond"> right </button>
+    
     <p id="output"></p>
     <iframe width="420" height="315" id="vid"
 src="https://www.youtube.com/embed/pL_699iBwd0">
@@ -30,16 +36,51 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
 	const vid = document.getElementById("vid");
 	const yas = document.getElementById("yas");
     const div = document.getElementById("div-text");
-	const buttonid = document.getElementById("button");
+	const buttona = document.getElementById("buttona");
+    const buttonb = document.getElementById("buttonb");
+    const buttonc = document.getElementById("buttonc");
+    const buttond = document.getElementById("buttond");
     //const inputid = document.getElementById("inputbox");
     const outputid = document.getElementById("outputbox");
 	let count_trace = 1;
 	var intervalId;
     var counter = 0;
-	var g = "99"
-	var f = "0"
+	var g = "#"
+	var f = "<span style='color:red'>♥</span>"
+    var height = 16;
+    var width = 32;
+    var player_x = 2;
+    var player_y = 1; 
 
+    buttona.addEventListener("click", () => { 
+        
+        if(player_x>0){
+        MovePixel(player_x,player_y,-1,0);
+        player_x--;
+        };
+     });
+    buttonb.addEventListener("click", () => { 
+        if(player_x<height-1){
+        MovePixel(player_x,player_y,1,0);
+        player_x++;
+        };
+     });
+     buttonc.addEventListener("click", () => { 
+        
+        if(player_y>0){
+        MovePixel(player_x,player_y,0,-1);
+        player_y--;
+        };
+     });
+    buttond.addEventListener("click", () => { 
+        if(player_y<width-1){
+        MovePixel(player_x,player_y,0,1);
+        player_y++;
+        };
+     });
+    let matrix = Matrix();
     Loop(3000,60*4);
+    CreatePixel(2,1,f);
     
     function Amor(){
 
@@ -74,24 +115,39 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
                 if(counter>deadline && deadline!=0){
                     clearInterval(intervalId);intervalId=null;
                 };
-                //SinWave(counter);
+                //LOOP
+                //for(let i = 0 )
                 
-                Render( Matrix(),8,8)
+                Render( matrix,width,height)
             }, framerate);	
         }
     };
+    function MovePixel(x,y,stepx,stepy){
+        SwapArray([x,y],[x+stepx,y+stepy]);
+    };
+    function CreatePixel(x,y,pixel){
+        //function to create tile in array 
+        matrix[x][y]=pixel;
+    };
+
+    function SwapArray(posa,posb){
+        //function to swap tiles in an array
+        let temp_arr = matrix[posa[0]][posa[1]];
+        let temp_brr = matrix[posb[0]][posb[1]];
+
+        matrix[posa[0]][posa[1]] = temp_brr;
+        matrix[posb[0]][posb[1]] = temp_arr;
+
+    };
+
 
     function Matrix(){
         let m = [ [] ];
-        let height = 8;
-        let width = 8;
-
+        //make a multidimensional array
         m = SetMatrix(m,width,height);
+        //linebreaks \n
         m = InsertN(m,width,height);
 
-     
-
-        console.log(m)
         return m;
     };
     function InsertN(arr,width,height){
@@ -109,50 +165,17 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
             arr[i].push( new Array(width) )
           
             for(let j = 0;j<width;j++){
-                arr[i][j]=counter;
+                arr[i][j]=g;
                 //arr[i][j]="<div style='display:inline;color:rgb(10.10."+toDec(Math.sin(counter),10)+")'>"+g+"</div>";
             };
 
         };
         return arr
     };
+
     function Render(arr,width,height){
-        /*
-        let m2 = arr;
-        g="<span style='color:red'>"+counter+"</span>";
-        
-        m2[1][1]=g;
-        m2[1][2]=g;
-        m2[2][1]=g;
-        m2[2][2]=g;
-        m2[4][1]=g;
-        m2[4][2]=g;
-        m2[5][1]=g;
-        m2[5][2]=g;
-        m2[4][2]=g;
-        m2[4][4]=g;
-        m2[2][3]=g;
-        m2[3][3]=g;
-        m2[4][3]=g;
-       
-        m2[1][1]=g;
-        m2[2][1]=g;
-        m2[1][2]=g;
-        m2[2][2]=g;
-        m2[1][4]=g;
-        m2[2][4]=g;
-        m2[1][5]=g;
-        m2[2][5]=g;
-        m2[2][4]=g;
-        m2[4][3]=g;
-        m2[3][2]=g;
-        m2[3][3]=g;
-        m2[3][4]=g;
-        m2[2][3]=g;
-        */
         let str = arr.toString();
         str = str.replace(/,/g, '');
-        //str = arr.Array,join("+").trim();
         div.innerHTML="<span style='color:yellow'>"+str+"</span>";
         
     };
