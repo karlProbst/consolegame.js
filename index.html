@@ -47,10 +47,42 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
     var counter = 0;
 	var g = "#"
 	var f = "<span style='color:red'>♥</span>"
-    var height = 16;
-    var width = 32;
+    var height = 72/4;
+    var width = 128/4;
     var player_x = 2;
     var player_y = 1; 
+
+    let input_up = false;
+    let input_down = false;
+    let input_left = false;
+    let input_right = false;
+    buttona.addEventListener("mouseover", () => {
+        input_up = true;
+    });
+    buttona.addEventListener("mouseout", () => {
+        input_up = false;
+    }); 
+    //
+    buttonb.addEventListener("mouseover", () => {
+        input_down = true;
+    });
+    buttonb.addEventListener("mouseout", () => {
+        input_down = false;
+    }); 
+    //
+    buttonc.addEventListener("mouseover", () => {
+        input_left = true;
+    });
+    buttonc.addEventListener("mouseout", () => {
+        input_left = false;
+    }); 
+    //
+    buttond.addEventListener("mouseover", () => {
+        input_right = true;
+    });
+    buttond.addEventListener("mouseout", () => {
+        input_right = false;
+    }); 
 
     buttona.addEventListener("click", () => { 
         
@@ -79,9 +111,13 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
         };
      });
     let matrix = Matrix();
-    Loop(3000,60*4);
+    Loop(3000,60);
     CreatePixel(2,1,f);
     
+    
+    let x2 = 10;
+    let y2= height-2;
+    CreatePixel(y2,x2,"->");
     function Amor(){
 
             let beat = Math.sin(counter)*2+50;
@@ -118,10 +154,57 @@ src="https://www.youtube.com/embed/pL_699iBwd0">
                 //LOOP
                 //for(let i = 0 )
                 
+                if(input_up){
+                    MovePlayer('up');
+                };
+                if(input_down){
+                    MovePlayer('down');
+                };
+                if(input_left){
+                    MovePlayer('left');
+                };
+                if(input_right){
+                    MovePlayer('right');
+                };
                 Render( matrix,width,height)
             }, framerate);	
         }
     };
+    function MovePlayer(str){
+        switch(str){
+            case 'up':
+            if(player_x>0){
+                MovePixel(player_x,player_y,-1,0);
+                player_x--;
+            };
+            break;
+            case 'down':
+                    if(player_x<height-1){
+                MovePixel(player_x,player_y,1,0);
+                player_x++;
+                };
+            break;
+            case 'left':
+                    if(player_y>0){
+                MovePixel(player_x,player_y,0,-1);
+                player_y--;
+                };
+            break;
+            case 'right':
+                    if(player_y<width-1){
+                MovePixel(player_x,player_y,0,1);
+                player_y++;
+                };
+            break;
+
+
+
+
+
+            default:
+                console.log("erro moveplayr");
+        };
+    }
     function MovePixel(x,y,stepx,stepy){
         SwapArray([x,y],[x+stepx,y+stepy]);
     };
